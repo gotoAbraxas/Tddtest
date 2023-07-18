@@ -1,6 +1,7 @@
 package com.example.demo.members.domain.entity;
 
 
+import com.example.demo.config.domain.entity.Likes;
 import com.example.demo.config.domain.entity.MemberLogin;
 import com.example.demo.todos.domain.entity.Todo;
 import jakarta.persistence.*;
@@ -28,4 +29,7 @@ public class Member{
 
     @OneToMany(mappedBy = "member")
     private List<MemberLogin> logins;
+
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likesList;
 }

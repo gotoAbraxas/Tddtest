@@ -43,7 +43,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null);
+        Member name = new Member(null, email, password, "name", 10, null, null,null);
         memberRepository.save(name);
 
     }
@@ -79,7 +79,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null);
+        Member name = new Member(null, email, password, "name", 10, null, null,null);
         memberRepository.save(name);
         //when
         LoginResponse loginResponse = memberService.login(loginRequest);
@@ -96,7 +96,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null);
+        Member name = new Member(null, email, password, "name", 10, null, null,null);
         memberRepository.save(name);
         //when
         LoginResponse loginResponse = memberService.login(loginRequest);
@@ -117,7 +117,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email +"333", password, "name", 10, null, null);
+        Member name = new Member(null, email +"333", password, "name", 10, null, null,null);
         memberRepository.save(name);
         //when
         RuntimeException runtimeException =  // 어떤 에러인지도 잡아줄 수 있다.

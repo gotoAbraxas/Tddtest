@@ -19,18 +19,22 @@ public class TodoService {
 
     public void update(Long id, UpdateRequest updateRequest){
 
-        Optional<Todo> byId = todoRepository.findById(id);
-        Todo todo = byId.orElseThrow(()->new RuntimeException("글이 없습니다."));
-        todo.toUpdate(updateRequest.getTitle(), updateRequest.getContent(), updateRequest.isDone());
+        Todo byId = findById(id);
+        byId.toUpdate(updateRequest.getTitle(), updateRequest.getContent(), updateRequest.isDone());
 
     }
 
     public void delete(Long id){
-        Optional<Todo> byId = todoRepository.findById(id);
 
-
-        todoRepository.delete();
+        Todo byId1 = findById(id);
+        todoRepository.delete(byId1);
     }
+
+    public Todo findById(Long id){
+
+        return todoRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
 
 
 }

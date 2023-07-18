@@ -34,7 +34,7 @@ class MemberLoginServiceTest {
     @BeforeEach
     void init(){
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null);
+        Member name = new Member(null, email, password, "name", 10, null, null,null);
         this.member = memberRepository.save(name);
         MemberLogin entity = new MemberLogin(this.member, LocalDateTime.now());
         memberLoginRepository.save(entity);
