@@ -1,6 +1,7 @@
 package com.example.demo.members.service;
 
 import com.example.demo.config.domain.entity.MemberLogin;
+import com.example.demo.config.exception.DuplicateEmailException;
 import com.example.demo.config.repository.MemberLoginRepository;
 import com.example.demo.config.service.MemberLoginService;
 import com.example.demo.members.domain.entity.Member;
@@ -87,6 +88,25 @@ class MemberServiceTest {
         assertThat(loginResponse.age()).isEqualTo(10);
         assertThat(loginResponse.name()).isEqualTo("name");
         assertThat(loginResponse.id()).isNotNull();
+    }
+
+
+    @Test
+    void 중복된가입(){
+        //given
+        String email = "1111";
+        String password = "1234";
+        LoginRequest loginRequest = new LoginRequest(email, password);
+        Member name = new Member(null, email, password, "name", 10, null, null,null);
+
+        //when
+          // 어떤 에러인지도 잡아줄 수 있다.
+        DuplicateEmailException duplicateEmailException = Assertions.assertThrows(
+                DuplicateEmailException.class,
+                () -> memberService.insert(new SignupRequest(email, password, "name", 12)));
+        //then
+        assertThat(duplicateEmailException).hasMessage("있는 이메일");
+
     }
     @Test
 

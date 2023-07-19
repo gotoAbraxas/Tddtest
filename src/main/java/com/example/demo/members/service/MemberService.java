@@ -1,6 +1,8 @@
 package com.example.demo.members.service;
 
 import com.example.demo.config.domain.entity.MemberLogin;
+import com.example.demo.config.exception.DuplicateEmailException;
+import com.example.demo.config.exception.LoginFailExceltion;
 import com.example.demo.config.service.MemberLoginService;
 import com.example.demo.members.domain.entity.Member;
 import com.example.demo.members.domain.request.LoginRequest;
@@ -19,7 +21,12 @@ public class MemberService {
     private final MemberLoginService memberLoginService;
 
     public void insert(SignupRequest request){
-        memberRepository.save(request.toEntity());
+
+        Optional<Member> byEmail = memberRepository.findByEmail(request.email());
+
+        if(byEmail.isPresent()) throw new DuplicateEmailException("있는 이메일");
+
+       memberRepository.save(request.toEntity());
     }
 
     public LoginResponse login(LoginRequest request){
@@ -27,7 +34,7 @@ public class MemberService {
                 memberRepository
                         .findByEmailAndPassword(request.email(), request.password());
         Member member = byEmailAndPassword
-                .orElseThrow(() -> new RuntimeException("없는 유저"));
+                .orElseThrow(() -> new LoginFailExceltion("없는 유저"));
         memberLoginService.insert(member);
         return new LoginResponse(member.getId(), member.getName(), member.getAge());
     }
