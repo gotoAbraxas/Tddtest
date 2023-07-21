@@ -12,4 +12,7 @@ public interface MemberLoginRepository
 
     @Query("select m from MemberLogin m where m.member.id = :memberId ORDER BY m.id DESC LIMIT 1")
     Optional<MemberLogin> findByMemberId(@Param("memberId")Long memberId);
+
+
+//    Optional<MemberLogin> findFirstByMemberIdAndEndAtAfterOrderByEndAtDesc();
 }

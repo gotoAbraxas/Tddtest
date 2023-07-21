@@ -8,6 +8,7 @@ import com.example.demo.members.domain.entity.Member;
 import com.example.demo.members.domain.request.LoginRequest;
 import com.example.demo.members.domain.request.SignupRequest;
 import com.example.demo.members.domain.response.LoginResponse;
+import com.example.demo.members.domain.response.MemberResponse;
 import com.example.demo.members.repository.MemberRepository;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,9 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +48,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null,null);
+        Member name = new Member(null, email, password, "name", 10, new ArrayList<>(), null);
         memberRepository.save(name);
 
     }
@@ -74,13 +78,30 @@ class MemberServiceTest {
     }
 
     @Test
+    void findAll(){
+        //given
+        String email = "1122";
+        String password = "1234";
+        LoginRequest loginRequest = new LoginRequest(email, password);
+        Member name = new Member(null, email, password, "name", 10, new ArrayList<>(), null);
+        memberRepository.save(name);
+        PageRequest of = PageRequest.of(0, 10);
+
+        //when
+        Page<MemberResponse> all = memberService.findAll(of);
+
+        //then
+        assertThat(all).hasSize(2);
+    }
+
+    @Test
     void 기본로그인() {
 
         //given
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null,null);
+        Member name = new Member(null, email, password, "name", 10, null, null);
         memberRepository.save(name);
         //when
         LoginResponse loginResponse = memberService.login(loginRequest);
@@ -97,7 +118,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null,null);
+        Member name = new Member(null, email, password, "name", 10, null, null);
 
         //when
           // 어떤 에러인지도 잡아줄 수 있다.
@@ -116,7 +137,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null,null);
+        Member name = new Member(null, email, password, "name", 10, null, null);
         memberRepository.save(name);
         //when
         LoginResponse loginResponse = memberService.login(loginRequest);
@@ -137,7 +158,7 @@ class MemberServiceTest {
         String email = "1111";
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email +"333", password, "name", 10, null, null,null);
+        Member name = new Member(null, email +"333", password, "name", 10, null, null);
         memberRepository.save(name);
         //when
         RuntimeException runtimeException =  // 어떤 에러인지도 잡아줄 수 있다.

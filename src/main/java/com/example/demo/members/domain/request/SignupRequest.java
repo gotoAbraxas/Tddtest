@@ -8,11 +8,8 @@ public record SignupRequest(String email
         , String name
         , Integer age) {
     public Member toEntity(){
-        return Member.builder()
-                .email(email)
-                .password(password)
-                .age(age)
-                .name(name)
-                .build();
+
+        return new Member(null,email,password,name,age,null,null);
+
     }
 }

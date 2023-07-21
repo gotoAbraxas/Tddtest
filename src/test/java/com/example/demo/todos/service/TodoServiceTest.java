@@ -1,7 +1,7 @@
 package com.example.demo.todos.service;
 
+import com.example.demo.todos.domain.entity.Likes;
 import com.example.demo.config.domain.entity.MemberLogin;
-import com.example.demo.config.repository.LikeRepository;
 import com.example.demo.config.repository.MemberLoginRepository;
 import com.example.demo.config.service.MemberLoginService;
 import com.example.demo.members.domain.entity.Member;
@@ -20,10 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -46,13 +42,13 @@ class TodoServiceTest {
     @BeforeEach
     void init(){
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Member name = new Member(null, email, password, "name", 10, null, null,null);
+        Member name = new Member(null, email, password, "name", 10, null, null);
         this.member = memberRepository.save(name);
         MemberLogin entity = new MemberLogin(this.member, LocalDateTime.now());
         memberLoginRepository.save(entity);
 
-        TodoRequest request = new TodoRequest("test", "test2", 1l);
-        todo = request.toEntity();
+        TodoRequest request = new TodoRequest("test", "test2",false);
+        todo = request.toEntity(member);
         todoRepository.save(todo);
     }
 
@@ -110,6 +106,21 @@ class TodoServiceTest {
         Todo todo1 = todoRepository.findById(id).orElse(null);
         Assertions.assertThat(todo1).isNull();
 
+    }
+
+    @Test
+    void 좋아요누르기(){
+        //given
+
+
+        //when
+        Long id = todo.getId();
+        todoService.like(id,member.getId());
+
+        //then
+//        Likes likes = todoService.findAll().get(0);
+//        Assertions.assertThat(likes.getMember().getId()).isEqualTo(member.getId());
+//        Assertions.assertThat(likes.getTodo().getId()).isEqualTo(id);
     }
 
 

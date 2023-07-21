@@ -25,7 +25,8 @@ public class MemberLoginService {
     public Member findByMember(Long memberId){
         Optional<MemberLogin> byMemberId = memberLoginRepository.findByMemberId(memberId);
 
-        MemberLogin memberLogin = byMemberId.orElseThrow(()->new RuntimeException("로그인 상태가 아닙니다."));
+        MemberLogin memberLogin = byMemberId.filter(m -> m.getEndAt()
+                .isBefore(LocalDateTime.now())).orElseThrow(()->new RuntimeException("로그인 상태가 아닙니다."));
 
         return memberLogin.getMember();
     }

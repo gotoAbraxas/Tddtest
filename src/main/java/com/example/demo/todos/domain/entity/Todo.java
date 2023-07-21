@@ -1,7 +1,6 @@
 package com.example.demo.todos.domain.entity;
 
 
-import com.example.demo.config.domain.entity.Likes;
 import com.example.demo.members.domain.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
