@@ -58,8 +58,11 @@ public class TodoService {
 
     }
 
-    public void check(Long todoId,Long memberId){
-        Optional<Todo> byId = todoRepository.findById(todoId);
+    public void check(Long id,Long memberId){
+        Optional<Todo> byId = todoRepository.findById(id);
+
+        byId.orElseThrow(()->new RuntimeException("TODOS_NOT_FOUND"));
+        byId.get().setDone(true);
     }
 
     public Page<TodoResponse> findAllBy(String title, String Content, PageRequest pageRequest){

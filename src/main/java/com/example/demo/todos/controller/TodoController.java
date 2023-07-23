@@ -61,4 +61,19 @@ public class TodoController {
         return todoService.findAllBy(title,content,pageRequest);
 
     }
+
+
+    @PutMapping("{todoId}/check")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @TokenRequired
+    public void todoCheck(@PathVariable(name = "todoId") Long todoId,
+                          @RequestHeader("Authorization")String token){
+
+        Map<String, Object> claims = authService.getClaims(token.replace("Bearer ",""));
+        Long memberId = ((Integer) claims.get("memberId")).longValue();
+
+        todoService.check(todoId,memberId);
+
+
+    }
 }
