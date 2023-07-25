@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
+public interface TodoRepository extends JpaRepository<Todo, Long>,CustomTodoRepository {
 
     @Query("select t from Todo t where t.title like :title or t.content like :content")
     Page<Todo> findAllByTitleAndContent(

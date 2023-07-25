@@ -2,6 +2,7 @@ package com.example.demo.todos.controller;
 
 import com.example.demo.aspect.TokenRequired;
 import com.example.demo.config.Auth.AuthService;
+import com.example.demo.todos.domain.dto.TodoCondition;
 import com.example.demo.todos.domain.entity.Todo;
 import com.example.demo.todos.domain.request.TodoRequest;
 import com.example.demo.todos.domain.request.UpdateRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -49,16 +51,19 @@ public class TodoController {
     }
 
     @GetMapping
-    public Page<TodoResponse> findAllBy(
-            @RequestParam(name = "title",required = false,defaultValue = "")String title,
-            @RequestParam(name = "content",required = false,defaultValue = "")String content,
+    public List<TodoResponse> findAllBy(
+            @RequestParam(name = "title",required = false)String title,
+            @RequestParam(name = "content",required = false)String content,
+            @RequestParam(name = "isDone",required = false) Boolean isDone,
+            @RequestParam(name = "LikeGoe",required = false)Integer likeGoe,
+            @RequestParam(name = "LikeLoe",required = false)Integer likeLoe,
             @RequestParam(required = false,defaultValue = "0",name = "page")
             Integer page,
             @RequestParam(required = false,defaultValue = "20",name = "size")
             Integer size){
-
+        TodoCondition todoCondition = new TodoCondition(title, content, isDone, likeGoe, likeLoe);
         PageRequest pageRequest = PageRequest.of(page, size);
-        return todoService.findAllBy(title,content,pageRequest);
+        return todoService.getAll(pageRequest,todoCondition);
 
     }
 
